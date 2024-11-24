@@ -6,14 +6,14 @@ import { config } from "./config";
 jest.mock("./config");
 const mockConfig = jest.mocked(config);
 
-describe("syncArticlesFromQiita", () => {
-  const qiitaApi = {
-    authenticatedUserItems: () => {},
-  } as unknown as QiitaApi;
-  const fileSystemRepo = {
-    saveItems: () => {},
-  } as unknown as FileSystemRepo;
+const qiitaApi = {
+  authenticatedUserItems: jest.fn(),
+} as unknown as QiitaApi;
+const fileSystemRepo = {
+  saveItems: jest.fn(),
+} as unknown as FileSystemRepo;
 
+describe("syncArticlesFromQiita", () => {
   const mockAuthenticatedUserItems = jest.spyOn(
     qiitaApi,
     "authenticatedUserItems",
@@ -91,7 +91,7 @@ describe("syncArticlesFromQiita", () => {
     };
 
     describe("when forceUpdate is true", () => {
-      it("called saveItems without forceUpdate", async () => {
+      it("called saveItems with forceUpdate", async () => {
         await expectSaveItemsToBeCalledWithForceUpdate(true);
       });
     });
